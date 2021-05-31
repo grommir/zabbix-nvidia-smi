@@ -1,0 +1,300 @@
+zabbix_export:
+  version: '5.4'
+  date: '2021-05-31T20:21:26Z'
+  groups:
+    -
+      uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+    -
+      uuid: e960332b3f6c46a1956486d4f3f99fce
+      name: 'Templates/Server hardware'
+  templates:
+    -
+      uuid: fee6737ea9fb453fb2bda1d09d3ba4a0
+      template: nvidia-smi
+      name: nvidia-smi
+      groups:
+        -
+          name: Templates
+        -
+          name: 'Templates/Server hardware'
+      items:
+        -
+          uuid: 0780cc07f8894f3997907da321987792
+          name: 'GPU get nvidia-smi metrics'
+          key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+          delay: 30s
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            -
+              tag: nvidia-smi
+              value: collector
+        -
+          uuid: 66679bdfcce64a42b928f2e83ba210c3
+          name: 'GPU shader clock'
+          type: DEPENDENT
+          key: nvidia-smi.clocks.current.graphics
+          delay: '0'
+          units: MHz
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''clocks.current.graphics [MHz]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: a6101f9b6ce7430098b1e42104954e30
+          name: 'GPU memory clock'
+          type: DEPENDENT
+          key: nvidia-smi.clocks.current.memory
+          delay: '0'
+          units: MHz
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''clocks.current.memory [MHz]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: 1dac7ef95e534e488e47140938c88965
+          name: 'GPU Streaming  Multiprocessor clock'
+          type: DEPENDENT
+          key: nvidia-smi.clocks.current.sm
+          delay: '0'
+          units: MHz
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''clocks.current.sm [MHz]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: b726e54f09974e459f178ec232bb4b3e
+          name: 'GPU encoder + decoder clock'
+          type: DEPENDENT
+          key: nvidia-smi.clocks.current.video
+          delay: '0'
+          units: MHz
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''clocks.current.video [MHz]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: d71a9072cc1a4960a1e2a0f15f60d29b
+          name: 'GPU memory free'
+          type: DEPENDENT
+          key: nvidia-smi.memory.free
+          delay: '0'
+          units: B
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''memory.free [MiB]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1048576'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: c8e257629ad943d1a4c8e1f74dce1fc1
+          name: 'GPU  memory total'
+          type: DEPENDENT
+          key: nvidia-smi.memory.total
+          delay: '0'
+          units: B
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''memory.total [MiB]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1048576'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: 5e1a947e3114431882a932bb2efde305
+          name: 'GPU memory used'
+          type: DEPENDENT
+          key: nvidia-smi.memory.used
+          delay: '0'
+          units: B
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''memory.used [MiB]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1048576'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: 3e365f14255d45609cfdacccd2e15b1e
+          name: 'GPU temperature °C'
+          type: DEPENDENT
+          key: nvidia-smi.temperature.gpu
+          delay: '0'
+          units: °C
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''temperature.gpu'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: 6374f3de74f947919e43370bfa7c1fd9
+          name: 'GPU  utilization %'
+          type: DEPENDENT
+          key: nvidia-smi.utilization.gpu
+          delay: '0'
+          units: '%'
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''utilization.gpu [%]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+        -
+          uuid: 10dc62b59b4a46faafaf3c2fa3bbe498
+          name: 'GPU utilization memory %'
+          type: DEPENDENT
+          key: nvidia-smi.utilization.memory.prcnt
+          delay: '0'
+          units: '%'
+          preprocessing:
+            -
+              type: STR_REPLACE
+              parameters:
+                - ', '
+                - ','
+            -
+              type: CSV_TO_JSON
+              parameters:
+                - ''
+                - ''
+                - '1'
+            -
+              type: JSONPATH
+              parameters:
+                - '$.[0].[''utilization.memory [%]'']'
+          master_item:
+            key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
+      macros:
+        -
+          macro: '{$QUERY_GPU}'
+          value: 'temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used,clocks.current.graphics,clocks.current.sm,clocks.current.memory,clocks.current.video,pstate'
+          description: 'Coma separated list for GPU query https://enterprise-support.nvidia.com/s/article/Useful-nvidia-smi-Queries-2'
