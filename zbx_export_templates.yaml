@@ -1,6 +1,6 @@
 zabbix_export:
   version: '5.4'
-  date: '2021-05-31T20:21:26Z'
+  date: '2021-05-31T20:53:14Z'
   groups:
     -
       uuid: 7df96b18c230490a9a0a9e2307226338
@@ -22,6 +22,7 @@ zabbix_export:
         -
           uuid: 0780cc07f8894f3997907da321987792
           name: 'GPU get nvidia-smi metrics'
+          type: ZABBIX_ACTIVE
           key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
           delay: 30s
           history: '0'
@@ -37,7 +38,7 @@ zabbix_export:
           type: DEPENDENT
           key: nvidia-smi.clocks.current.graphics
           delay: '0'
-          units: MHz
+          units: Hz
           preprocessing:
             -
               type: STR_REPLACE
@@ -54,6 +55,10 @@ zabbix_export:
               type: JSONPATH
               parameters:
                 - '$.[0].[''clocks.current.graphics [MHz]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1000000'
           master_item:
             key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
         -
@@ -62,7 +67,7 @@ zabbix_export:
           type: DEPENDENT
           key: nvidia-smi.clocks.current.memory
           delay: '0'
-          units: MHz
+          units: Hz
           preprocessing:
             -
               type: STR_REPLACE
@@ -79,6 +84,10 @@ zabbix_export:
               type: JSONPATH
               parameters:
                 - '$.[0].[''clocks.current.memory [MHz]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1000000'
           master_item:
             key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
         -
@@ -87,7 +96,7 @@ zabbix_export:
           type: DEPENDENT
           key: nvidia-smi.clocks.current.sm
           delay: '0'
-          units: MHz
+          units: Hz
           preprocessing:
             -
               type: STR_REPLACE
@@ -104,6 +113,10 @@ zabbix_export:
               type: JSONPATH
               parameters:
                 - '$.[0].[''clocks.current.sm [MHz]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1000000'
           master_item:
             key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
         -
@@ -112,7 +125,7 @@ zabbix_export:
           type: DEPENDENT
           key: nvidia-smi.clocks.current.video
           delay: '0'
-          units: MHz
+          units: Hz
           preprocessing:
             -
               type: STR_REPLACE
@@ -129,6 +142,10 @@ zabbix_export:
               type: JSONPATH
               parameters:
                 - '$.[0].[''clocks.current.video [MHz]'']'
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1000000'
           master_item:
             key: 'gpu.nvidia-smi.get[{$QUERY_GPU}]'
         -
